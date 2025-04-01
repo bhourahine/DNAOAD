@@ -80,8 +80,23 @@ module dualzn_mod
 
   !overloaded operators
   interface operator(*)
-     module procedure timesdX
-     module procedure timesXd
+     module procedure timesdualzn
+     module procedure timesdXc128
+     module procedure timesdXc64
+     module procedure timesdXc32
+     module procedure timesdXr128
+     module procedure timesdXr64
+     module procedure timesdXr32
+     module procedure timesdXi64
+     module procedure timesdXi32
+     module procedure timesXdc128
+     module procedure timesXdc64
+     module procedure timesXdc32
+     module procedure timesXdr128
+     module procedure timesXdr64
+     module procedure timesXdr32
+     module procedure timesXdi64
+     module procedure timesXdi32
   end interface operator(*)
 
   interface operator(/)
@@ -102,8 +117,23 @@ module dualzn_mod
   end interface operator (-)
 
   interface operator(**)
-     module procedure powerdX
-     module procedure powerXd
+     module procedure powerdualzn
+     module procedure powerdXc128
+     module procedure powerdXc64
+     module procedure powerdXc32
+     module procedure powerdXr128
+     module procedure powerdXr64
+     module procedure powerdXr32
+     module procedure powerdXi64
+     module procedure powerdXi32
+     module procedure powerXdc128
+     module procedure powerXdc64
+     module procedure powerXdc32
+     module procedure powerXdr128
+     module procedure powerXdr64
+     module procedure powerXdr32
+     module procedure powerXdi64
+     module procedure powerXdi32
   end interface operator(**)
   !---------------------------------------------------------------------
   !some matrix and vector operations
@@ -579,8 +609,23 @@ contains
   !---------------------------------------------------------------------
 
   !dual**class
+  elemental function powerdualzn(B,X) result(fr)
+    type(dualzn), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    fr = powerd(B,X)
+  end function powerdualzn
+  elemental function powerdXc128(B,X) result(fr)
+    complex(kind=real128), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    type(dualzn) :: Xd
+    Xd = cmplxtodn(X)
+    fr = powerd(B,Xd)
+  end function powerdX
+
   elemental function powerdX(B,X) result(fr)
-    class(*), intent(in) :: X
+    type(dualzn), intent(in) :: X
     type(dualzn), intent(in) :: B
     type(dualzn) :: fr
     type(dualzn) :: Xd
@@ -1099,65 +1144,143 @@ contains
   !---------------------------------------------------------------------
 
   !dual*class
-  elemental function timesdX(B,X) result(fr)
-    class(*), intent(in) :: X
+  elemental function timesdualzn(B,X) result(fr)
+    type(dualzn), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    fr = timesd(B,X)
+  end function timesdualzn
+  elemental function timesdXr128(B,X) result(fr)
+    type(real(kind=real128)), intent(in) :: X
     type(dualzn), intent(in) :: B
     type(dualzn) :: fr
     type(dualzn) :: Xd
-
-    select type (X)
-    type is (dualzn)
-       Xd = X
-    type is(complex(kind=real128))
-       Xd = cmplxtodn(X)
-    type is (complex(kind=real64))
-       Xd =cmplxtodn(X)
-    type is (complex(kind=real32))
-       Xd =cmplxtodn(X)
-    type is (real(kind=real128))
-       Xd = realtodn(X)
-    type is (real(kind=real64))
-       Xd = realtodn(X)
-    type is (real(kind=real32))
-       Xd = realtodn(X)         
-    type is (integer(kind=int64))
-       Xd = itodn(X)
-    type is (integer(kind=int32))
-       Xd = itodn(X)
-    end select
+    Xd = realtodn(X)
     fr = timesd(B,Xd)
-  end function timesdX
+  end function timesdXr128
+  elemental function timesdXr64(B,X) result(fr)
+    type(real(kind=real64)), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    type(dualzn) :: Xd
+    Xd = realtodn(X)
+    fr = timesd(B,Xd)
+  end function timesdXr64
+  elemental function timesdXr32(B,X) result(fr)
+    type(real(kind=real32)), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    type(dualzn) :: Xd
+    Xd = realtodn(X)
+    fr = timesd(B,Xd)
+  end function timesdXr32
+  elemental function timesdXc128(B,X) result(fr)
+    type(complex(kind=real128)), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    type(dualzn) :: Xd
+    Xd = cmplxtodn(X)
+    fr = timesd(B,Xd)
+  end function timesdXc128
+  elemental function timesdXc64(B,X) result(fr)
+    type(complex(kind=real64)), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    type(dualzn) :: Xd
+    Xd = cmplxtodn(X)
+    fr = timesd(B,Xd)
+  end function timesdXc64
+  elemental function timesdXc32(B,X) result(fr)
+    type(complex(kind=real32)), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    type(dualzn) :: Xd
+    Xd = cmplxtodn(X)
+    fr = timesd(B,Xd)
+  end function timesdXc32
+  elemental function timesdXi64(B,X) result(fr)
+    type(integer(kind=int64)), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    type(dualzn) :: Xd
+    Xd = itodn(X)
+    fr = timesd(B,Xd)
+  end function timesdXi64
+  elemental function timesdXi32(B,X) result(fr)
+    type(integer(kind=int32)), intent(in) :: X
+    type(dualzn), intent(in) :: B
+    type(dualzn) :: fr
+    type(dualzn) :: Xd
+    Xd = itodn(X)
+    fr = timesd(B,Xd)
+  end function timesdXi32
   !---------------------------------------------------------------------
 
   !class*dual
-  elemental function timesXd(XX,BB) result(fr)
-    class(*), intent(in) :: XX
+  elemental function timesXdr128(XX,BB) result(fr)
+    type(real(kind=real128)), intent(in) :: XX
     type(dualzn), intent(in) :: BB
     type(dualzn) :: fr
-    type(dualzn) :: Xd
-
-    select type (XX)
-    type is (dualzn)
-       Xd = XX
-    type is(complex(kind=real128))
-       Xd = cmplxtodn(XX)
-    type is (complex(kind=real64))
-       Xd =cmplxtodn(XX)
-    type is (complex(kind=real32))
-       Xd =cmplxtodn(XX)
-    type is (real(kind=real128))
-       Xd = realtodn(XX)
-    type is (real(kind=real64))
-       Xd = realtodn(XX)
-    type is (real(kind=real32))
-       Xd = realtodn(XX)         
-    type is (integer(kind=int64))
-       Xd = itodn(XX)
-    type is (integer(kind=int32))
-       Xd = itodn(XX)
-    end select
-    fr = timesd(Xd, BB)
-  end function timesXd
+    type(dualzn) :: XXd
+    XXd = realtodn(XX)
+    fr = timesd(XXd,BB)
+  end function timesXdr128
+  elemental function timesXdr64(XX,BB) result(fr)
+    type(real(kind=real64)), intent(in) :: XX
+    type(dualzn), intent(in) :: BB
+    type(dualzn) :: fr
+    type(dualzn) :: XXd
+    XXd = realtodn(XX)
+    fr = timesd(XXd,BB)
+  end function timesXdr64
+  elemental function timesXdr32(XX,BB) result(fr)
+    type(real(kind=real32)), intent(in) :: XX
+    type(dualzn), intent(in) :: BB
+    type(dualzn) :: fr
+    type(dualzn) :: XXd
+    XXd = realtodn(XX)
+    fr = timesd(XXd,BB)
+  end function timesXdr32
+  elemental function timesXdc128(XX,BB) result(fr)
+    type(complex(kind=real128)), intent(in) :: XX
+    type(dualzn), intent(in) :: BB
+    type(dualzn) :: fr
+    type(dualzn) :: XXd
+    XXd = cmplxtodn(XX)
+    fr = timesd(XXd,BB)
+  end function timesXdc128
+  elemental function timesXdc64(XX,BB) result(fr)
+    type(complex(kind=real64)), intent(in) :: XX
+    type(dualzn), intent(in) :: BB
+    type(dualzn) :: fr
+    type(dualzn) :: XXd
+    XXd = cmplxtodn(XX)
+    fr = timesd(XXd,BB)
+  end function timesXdc64
+  elemental function timesXdc32(XX,BB) result(fr)
+    type(complex(kind=real32)), intent(in) :: XX
+    type(dualzn), intent(in) :: BB
+    type(dualzn) :: fr
+    type(dualzn) :: XXd
+    XXd = cmplxtodn(XX)
+    fr = timesd(XXd,BB)
+  end function timesXdc32
+  elemental function timesXdi64(XX,BB) result(fr)
+    type(integer(kind=int64)), intent(in) :: XX
+    type(dualzn), intent(in) :: BB
+    type(dualzn) :: fr
+    type(dualzn) :: XXd
+    XXd = itodn(XX)
+    fr = timesd(XXd,BB)
+  end function timesXdi64
+  elemental function timesXdi32(XX,BB) result(fr)
+    type(integer(kind=int32)), intent(in) :: XX
+    type(dualzn), intent(in) :: BB
+    type(dualzn) :: fr
+    type(dualzn) :: XXd
+    XXd = itodn(XX)
+    fr = timesd(XXd,BB)
+  end function timesXdi32
   !---------------------------------------------------------------------
 
   !A*B
