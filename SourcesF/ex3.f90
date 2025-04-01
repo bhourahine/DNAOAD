@@ -35,7 +35,6 @@ contains
     f2 = cos(x*y*z*w)*sqrt(w/y - x/z)
     f3 = sin(log(x*y*z*w))
 
-    allocate(fr(3))
     fr = [f1,f2,f3]
   end function fvectest
 end module function_mod
